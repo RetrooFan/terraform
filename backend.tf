@@ -1,11 +1,11 @@
 terraform {
   backend "s3" {
-    bucket         = "krzysieksobol93-terraform-state"
-    key            = "terraform.tfstate"
-    region         = "eu-central-1"
-    use_lockfile   = true
-    encrypt        = true
-    profile        = "krzysieksobol93"
+    bucket       = "krzysieksobol93-terraform-state"
+    key          = "terraform.tfstate"
+    region       = "eu-central-1"
+    use_lockfile = true
+    encrypt      = true
+    profile      = "krzysieksobol93"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "state_lifecycle" {
     status = "Enabled"
 
     noncurrent_version_expiration {
-      noncurrent_days = 30
+      noncurrent_days           = 30
       newer_noncurrent_versions = 10
     }
   }

@@ -40,3 +40,17 @@ resource "aws_s3_bucket_public_access_block" "state_public_block" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "state_lifecycle" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    id     = "keep-at-least-10-versions-delete-after-30-days"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+      newer_noncurrent_versions = 10
+    }
+  }
+}

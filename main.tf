@@ -45,3 +45,23 @@ resource "aws_route_table_association" "main_public_subnet_assoc" {
   subnet_id      = aws_subnet.main_public_subnet.id
   route_table_id = aws_route_table.main_public_rt.id
 }
+
+resource "aws_security_group" "main_sg" {
+  name        = "main_sg"
+  description = "main security group"
+  vpc_id      = aws_vpc.main_vpc.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["37.225.71.191/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

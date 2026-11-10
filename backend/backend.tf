@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket       = "krzysieksobol93-terraform-state"
-    key          = "terraform.tfstate"
+    bucket       = "krzysieksobol93-terraform-states"
+    key          = "terraform-backend.tfstate"
     region       = "eu-central-1"
     use_lockfile = true
     encrypt      = true
@@ -9,13 +9,13 @@ terraform {
   }
 }
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket        = "krzysieksobol93-terraform-state"
+resource "aws_s3_bucket" "terraform_states" {
+  bucket        = "krzysieksobol93-terraform-states"
   force_destroy = false
 }
 
 resource "aws_s3_bucket_versioning" "state_versioning" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_states.id
 
   versioning_configuration {
     status = "Enabled"
@@ -23,7 +23,7 @@ resource "aws_s3_bucket_versioning" "state_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "state_encryption" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_states.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -33,7 +33,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state_encryption"
 }
 
 resource "aws_s3_bucket_public_access_block" "state_public_block" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_states.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -42,7 +42,7 @@ resource "aws_s3_bucket_public_access_block" "state_public_block" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "state_lifecycle" {
-  bucket = aws_s3_bucket.terraform_state.id
+  bucket = aws_s3_bucket.terraform_states.id
 
   rule {
     id     = "keep-at-least-10-versions-delete-after-30-days"

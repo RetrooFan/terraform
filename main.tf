@@ -82,4 +82,13 @@ resource "aws_instance" "main_instance" {
   tags = {
     Name = "main_instance"
   }
+
+  provisioner "local-exec" {
+    command = templatefile("ssh-config-linux.tpl", {
+      hostname = self.public_ip
+      user = "ubuntu"
+      identityfile = "~/.ssh/keys/ThinkPad-T460p.key"
+    })
+    interpreter = ["bash", "-c"]
+  }
 }

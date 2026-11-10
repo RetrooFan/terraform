@@ -89,6 +89,6 @@ resource "aws_instance" "main_instance" {
       user = "ubuntu"
       identityfile = "~/.ssh/keys/ThinkPad-T460p.key"
     })
-    interpreter = ["bash", "-c"]
+    interpreter = var.host_os == "linux" ? ["bash", "-c"] : ["powershell", "-command"]
   }
 }
